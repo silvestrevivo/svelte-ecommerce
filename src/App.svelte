@@ -12,10 +12,19 @@
 
     // Components
     import Navbar from './components/Navbar/Navbar.svelte';
+    import Sidebar from './components/Navbar/Sidebar.svelte';
+
+    // global Store
+    import globalStore from './stores/globalStore';
+
+    console.log('globalStore', $globalStore);
 </script>
 
 <Router>
     <Navbar />
+    {#if $globalStore.sidebar}
+        <Sidebar />
+    {/if}
     <div>
         <Route path="/" component={Home} />
         <Route path="/about" component={About} />
