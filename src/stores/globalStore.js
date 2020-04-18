@@ -14,12 +14,6 @@ const store = {
             [item]: value,
         }));
     },
-    // toggleCart: value => {
-    //     globalStore.update(storeValues => ({
-    //         ...storeValues,
-    //         sidebar: !storeValues.sidebar,
-    //     }));
-    // },
 };
 
 export default store;
