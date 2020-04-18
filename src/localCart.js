@@ -4,7 +4,7 @@ export default [
         title: 'razor blade',
         price: 1.99,
         image: '/assets/product-images/product-1.png',
-        amount: 1,
+        amount: 3,
     },
     {
         id: 2,

@@ -2,6 +2,7 @@
     import globalStore from '../../stores/globalStore';
     import { fly, fade, blur } from 'svelte/transition';
     import { link } from 'svelte-routing';
+    import ItemsList from './ItemsList.svelte';
 
     // itemlist
     let user = false;
@@ -21,7 +22,7 @@
                 <span />
             </div>
             <!-- cart items -->
-            <p>cart items</p>
+            <ItemsList />
             <!-- cart footer -->
             <div class="cart-footer">
                 {#if user}
