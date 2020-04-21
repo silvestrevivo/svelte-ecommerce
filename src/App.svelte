@@ -17,8 +17,6 @@
 
     // global Store
     import globalStore from './stores/globalStore';
-
-    console.log('globalStore', $globalStore);
 </script>
 
 <Router>
