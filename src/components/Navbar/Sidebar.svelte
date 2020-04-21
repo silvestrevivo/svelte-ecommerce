@@ -1,6 +1,7 @@
 <script>
     import links from '../../constants/links';
     import { link } from 'svelte-routing';
+    import LoginLink from '../LoginLink.svelte';
     import globalStore from '../../stores/globalStore';
     import { fly, fade } from 'svelte/transition';
 </script>
@@ -31,6 +32,9 @@
                     </a>
                 </li>
             {/each}
+            <li>
+                <LoginLink />
+            </li>
         </ul>
     </div>
 </div>
