@@ -1,5 +1,4 @@
 import { writable, derived } from 'svelte/store';
-import localCart from '../localCart';
 
 const cart = writable(getStorageCart());
 
