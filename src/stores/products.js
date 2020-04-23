@@ -16,7 +16,7 @@ async function setProducts() {
 
 function flattenProducts(data) {
     return data.map(item => {
-        let image = item.image.url;
+        let image = `${process.env.API_URL}${item.image[0].url}`;
         return { ...item, image };
     });
 }
