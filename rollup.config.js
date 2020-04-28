@@ -32,6 +32,7 @@ export default {
             process: JSON.stringify({
                 env: {
                     API_URL: process.env.API_URL,
+                    API_STRIPE: process.env.API_STRIPE,
                 },
             }),
         }),
