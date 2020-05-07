@@ -2,10 +2,12 @@
     import { onMount } from 'svelte';
     import { navigate, link } from 'svelte-routing';
     import user from '../stores/user';
-    import { cartTotal } from '../stores/cart';
+    import cart, { cartTotal } from '../stores/cart';
+    import submitOrder from '../strapi/submitOrder';
+    import globalStorage from '../stores/globalStore';
 
     let name;
-    $: isEmpty = !name;
+    $: isEmpty = !name || $globalStorage.alert;
     // stripe vars
     let cardElement, cardErrors, card, stripe, elements;
 
@@ -30,16 +32,42 @@
     });
 
     async function handleSubmit() {
-        console.log('sub');
-
+        globalStorage.toggleItem(
+            'alert',
+            true,
+            'submitting order...please wait!',
+        );
         let response = await stripe
             .createToken(card)
             .catch(err => console.log(err));
         const { token } = response;
         if (token) {
-            console.log(response);
+            const { id } = token;
+            let order = await submitOrder({
+                name,
+                total: $cartTotal,
+                items: $cart,
+                stripeTokenId: id,
+                userToken: $user.jwt,
+            });
+            if (order) {
+                globalStorage.toggleItem(
+                    'alert',
+                    true,
+                    'your order is completed',
+                );
+                cart.set([]);
+                localStorage.setItem('cart', JSON.stringify([]));
+                navigate('/');
+                return;
+            }
         } else {
-            console.log(response);
+            globalStorage.toggleItem(
+                'alert',
+                true,
+                'there was an error with your order, please try again',
+                true,
+            );
         }
     }
 </script>
