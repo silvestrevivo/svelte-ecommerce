@@ -14,21 +14,33 @@
             navigate('/');
             return;
         }
-        stripe = Stripe(process.env.API_STRIPE);
-        elements = stripe.elements();
-        card = elements.create('card');
-        card.mount(cardElement);
-        card.addEventListener('change', e => {
-            if (e.error) {
-                cardErrors.textContent = e.error.message;
-            } else {
-                cardErrors.textContent = '';
-            }
-        });
+        if ($cartTotal > 0) {
+            stripe = Stripe(process.env.API_STRIPE);
+            elements = stripe.elements();
+            card = elements.create('card');
+            card.mount(cardElement);
+            card.addEventListener('change', function(e) {
+                if (e.error) {
+                    cardErrors.textContent = e.error.message;
+                } else {
+                    cardErrors.textContent = '';
+                }
+            });
+        }
     });
 
-    function handleSubmit() {
-        console.log('form submitted');
+    async function handleSubmit() {
+        console.log('sub');
+
+        let response = await stripe
+            .createToken(card)
+            .catch(err => console.log(err));
+        const { token } = response;
+        if (token) {
+            console.log(response);
+        } else {
+            console.log(response);
+        }
     }
 </script>
 
@@ -43,21 +55,22 @@
                 <input type="text" id="name" bind:value={name} />
             </div>
             <!-- stripe stuff -->
-            <label for="card-element">Credit or Debit Card</label>
-            <p class="stripe-info">
-                test using this credit card:
-                <span>4242 4242 4242 4242</span>
-                <br />
-                enter any 5 digits for the zip code
-                <br />
-                enter any 3 digits for the CVC
-            </p>
             <div class="stripe-input">
+                <label for="card-element">Credit or Debit Card</label>
+                <p class="stripe-info">
+                    test using this credit card:
+                    <span>4242 4242 4242 4242</span>
+                    <br />
+                    enter any 5 digits for the zip code
+                    <br />
+                    enter any 3 digits for the CVC
+                </p>
                 <div id="card-element" bind:this={cardElement}>
                     <!-- stripe -->
                 </div>
                 <div id="card-errors" bind:this={cardErrors} role="alert" />
             </div>
+            <!-- error message -->
             {#if isEmpty}
                 <p class="form-empty">please fill out name field</p>
             {/if}
